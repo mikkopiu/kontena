@@ -19,6 +19,7 @@ describe Rpc::ServicePodSerializer do
       env: ['FOO=bar'],
       networks: [grid.networks.first],
       service_volumes: [ServiceVolume.new(volume: volume, path:'/data'), ServiceVolume.new(volume: ext_vol, path: '/foo')],
+      stop_signal: 'SIGQUIT',
       stop_grace_period: 20
     )
   end
@@ -161,7 +162,7 @@ describe Rpc::ServicePodSerializer do
     end
 
     it 'stop_signal' do
-      expect(subject.to_hash).to include(:stop_signal => 20)
+      expect(subject.to_hash).to include(:stop_signal => 'SIGQUIT')
     end
 
     it 'stop_grace_period' do
