@@ -227,8 +227,8 @@ describe Kontena::Models::ServicePod do
     end
 
     it 'includes StopSignal if set' do
-      data['StopSignal'] = ['SIGQUIT']
-      expect(service_config['StopSignal']).to eq(['SIGQUIT'])
+      data['StopSignal'] = 'SIGQUIT'
+      expect(service_config['StopSignal']).to eq('SIGQUIT')
     end
 
     it 'includes empty ExposedPorts if no ports are defined' do
