@@ -227,7 +227,7 @@ describe Kontena::Models::ServicePod do
     end
 
     it 'includes StopSignal if set' do
-      data['StopSignal'] = 'SIGQUIT'
+      data['stop_signal'] = 'SIGQUIT'
       expect(service_config['StopSignal']).to eq('SIGQUIT')
     end
 
