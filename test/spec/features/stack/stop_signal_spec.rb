@@ -1,17 +1,20 @@
-describe 'service link' do
+describe 'stop_signal' do
   after(:each) do
-    run "kontena stack rm --force stop_signal"
+    run "kontena stack rm --force simple"
   end
 
-  it 'stops container with user-defined signal' do
+  it 'stops container with user-defined signal', :focus => true do
     with_fixture_dir("stack/stop_signal") do
-      run 'kontena stack install'
-      sleep 1
-      id = container_id('stop_signal')
+      k = run 'kontena stack install --deploy'
+      k.wait
+      expect(k.code).to eq(0)
 
-      run 'kontena stack stop'
+      id = container_id('simple.app-1')
+
+      run 'kontena stack stop simple'
       k = run "kontena container inspect #{id}"
-      expect(k.out.match(/^\s+\"ExitCode\"\:\s+0\,$/)).to be_truthy
+      expect(k.code).to eq(0)
+      expect(k.out).to match(/^\s+\"ExitCode\"\:\s+0\,$/)
     end
   end
 end
