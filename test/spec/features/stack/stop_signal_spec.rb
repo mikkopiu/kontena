@@ -11,7 +11,6 @@ describe 'service link' do
 
       run 'kontena stack stop'
       k = run "kontena container inspect #{id}"
-      "ExitCode": 137
       expect(k.out.match(/^\s+\"ExitCode\"\:\s+0\,$/)).to be_truthy
     end
   end
