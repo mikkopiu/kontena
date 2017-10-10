@@ -3,18 +3,17 @@ describe 'stop_signal' do
     run "kontena stack rm --force simple"
   end
 
-  it 'stops container with user-defined signal', :focus => true do
+  it 'stops container with user-defined signal' do
     with_fixture_dir("stack/stop_signal") do
-      k = run 'kontena stack install --deploy'
-      k.wait
-      expect(k.code).to eq(0)
+      run 'kontena stack install --deploy'
+      sleep 1
+      k = run 'kontena container list -q --all'
+      id = k.out.match("^(.+\/simple)")[1]
 
-      id = container_id('simple.app-1')
-
-      run 'kontena stack stop simple'
+      run 'kontena stack stop'
       k = run "kontena container inspect #{id}"
-      expect(k.code).to eq(0)
-      expect(k.out).to match(/^\s+\"ExitCode\"\:\s+0\,$/)
+      code = JSON.parse(k.out).dig('ExitCode')
+      expect(code).to eq(0)
     end
   end
 end
