@@ -14,9 +14,9 @@ describe 'stop_signal' do
 
       run 'kontena stack stop'
       container = Docker::Container.all({all: true}).find { |c|
-        JSON.parse(c.info).Names.find { |e| /simple/ =~ e } != nil
+        c.info.Names.find { |e| /simple/ =~ e } != nil
       }
-      exit_code = JSON.parse(container.info).dig('ExitCode')
+      exit_code = container.info.dig('ExitCode')
       expect(exit_code).to eq(0)
     end
   end
