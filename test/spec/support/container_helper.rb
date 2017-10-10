@@ -1,3 +1,5 @@
+require 'docker'
+
 module ContainerHelper
 
   # Checks if a deployed container exists with given name
@@ -22,13 +24,6 @@ module ContainerHelper
   def container_id(name)
     k = run("kontena container list -q")
     k.out.match("^(.+\/#{name})")[1]
-  end
-
-  def inspect_all(id)
-    container = Docker::Container.get(id, { :query => {:all => 1} })
-    container.json
-  rescue Docker::Error::NotFoundError
-    raise RpcServer::Error.new(404, 'Not found')
   end
 
 end

@@ -1,3 +1,5 @@
+require 'docker'
+
 describe 'stop_signal' do
   after(:each) do
     run "kontena stack rm --force simple"
@@ -11,8 +13,10 @@ describe 'stop_signal' do
       id = k.out.match("^(.+\/simple)")[1]
 
       run 'kontena stack stop'
-      json = inspect_all(id)
-      exit_code = JSON.parse(json).dig('ExitCode')
+      container = Docker::Container.all({all: true}).find { |c|
+        JSON.parse(c.info).Names.find { |e| /simple/ =~ e } != nil
+      }
+      exit_code = JSON.parse(container.info).dig('ExitCode')
       expect(exit_code).to eq(0)
     end
   end
