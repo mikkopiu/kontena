@@ -1,5 +1,3 @@
-require 'docker'
-
 module ContainerHelper
 
   # Checks if a deployed container exists with given name
