@@ -24,4 +24,11 @@ module ContainerHelper
     k.out.match("^(.+\/#{name})")[1]
   end
 
+  def inspect_all(id)
+    container = Docker::Container.get(id, { :query => {:all => 1} })
+    container.json
+  rescue Docker::Error::NotFoundError
+    raise RpcServer::Error.new(404, 'Not found')
+  end
+
 end

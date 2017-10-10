@@ -11,9 +11,9 @@ describe 'stop_signal' do
       id = k.out.match("^(.+\/simple)")[1]
 
       run 'kontena stack stop'
-      k = run "kontena container inspect #{id}"
-      code = JSON.parse(k.out).dig('ExitCode')
-      expect(code).to eq(0)
+      json = inspect_all(id)
+      exit_code = JSON.parse(json).dig('ExitCode')
+      expect(exit_code).to eq(0)
     end
   end
 end
