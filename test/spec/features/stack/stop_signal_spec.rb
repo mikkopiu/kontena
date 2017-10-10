@@ -7,16 +7,15 @@ describe 'stop_signal' do
 
   it 'stops container with user-defined signal' do
     with_fixture_dir("stack/stop_signal") do
-      run 'kontena stack install --deploy'
-      sleep 1
-      k = run 'kontena container list -q --all'
-      id = k.out.match("^(.+\/simple)")[1]
+      k = run 'kontena stack install --deploy'
+      k.wait
 
-      run 'kontena stack stop'
+      k = run 'kontena stack stop'
+      k.wait
       container = Docker::Container.all({all: true}).find { |c|
-        c.info.Names.find { |e| /simple/ =~ e } != nil
+        c.info['Names'].find { |e| /simple/ =~ e } != nil
       }
-      exit_code = container.info.dig('ExitCode')
+      exit_code = container.info['ExitCode']
       expect(exit_code).to eq(0)
     end
   end
