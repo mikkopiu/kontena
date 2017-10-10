@@ -10,7 +10,7 @@ describe 'stop_signal' do
       k = run 'kontena stack install --deploy'
       k.wait
 
-      k = run 'kontena stack stop'
+      k = run 'kontena stack stop simple'
       k.wait
       container = Docker::Container.all({all: true}).find { |c|
         c.info['Names'].find { |e| /simple/ =~ e } != nil
